@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #9face6);
+        }
+
+        .contact-form {
+            width: 360px;
+            margin: 60px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .contact-form h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #74ebd5;
+            outline: none;
+            box-shadow: 0 0 5px rgba(116,235,213,0.7);
+        }
+
+        input[type="submit"] {
+            background: #74ebd5;
+            color: #000;
+            border: none;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #9face6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contact-form">
+        <h2>Contact us</h2>
+        <form>
+            <label>Name</label>
+            <input type="text">
+
+            <label>Email</label>
+            <input type="email">
+
+            <label>Message</label>
+            <textarea rows="4"></textarea>
+
+            <input type="submit" value="Send Message">
+        </form>
+    </div>
+
+</body>
+</html>
