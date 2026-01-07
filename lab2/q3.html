@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced Task Manager</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #03fa28, #02b7f9);
+        min-height: 100vh;
+        padding: 30px;
+        color: #333;
+    }
+
+    h1 {
+        text-align: center;
+        color: white;
+        margin-bottom: 25px;
+    }
+
+    /* Input Section */
+    .task-input {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .task-input input {
+        padding: 12px;
+        width: 280px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .task-input button {
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        background: #00aeff;
+        color: rgb(255, 255, 255);
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .task-input button:hover {
+        background: #008cff;
+    }
+
+    /* Board */
+    .board {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .column {
+        width: 300px;
+        min-height: 380px;
+        background: #ffffffe6;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .column h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #444;
+    }
+
+    /* Task Card */
+    .task {
+        background: #f1f4f9;
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 10px;
+        cursor: grab;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+        transition: transform 0.2s;
+    }
+
+    .task:hover {
+        transform: scale(1.02);
+    }
+
+    .task small {
+        display: block;
+        margin-top: 6px;
+        color: #666;
+        font-size: 12px;
+    }
+
+    /* Completed Task */
+    .completed {
+        background: linear-gradient(135deg, #a8ff78, #78ffd6);
+        font-weight: bold;
+    }
+
+    /* Message */
+    #message {
+        text-align: center;
+        margin-top: 20px;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>📌 Advanced Task Manager</h1>
+
+<div class="task-input">
+    <input type="text" id="taskInput" placeholder="Enter task name">
+    <button onclick="addTask()">Add Task</button>
+</div>
+
+<div class="board">
+
+    <div class="column" id="todo" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <h2>📝 To Do</h2>
+    </div>
+
+    <div class="column" id="progress" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <h2>⏳ In Progress</h2>
+    </div>
+
+    <div class="column" id="completed" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <h2>✅ Completed</h2>
+    </div>
+
+</div>
+
+<div id="message"></div>
+
+<script>
+    let id = 0;
+
+    function addTask() {
+        const input = document.getElementById("taskInput");
+        const name = input.value.trim();
+        if (name === "") return;
+
+        const task = document.createElement("div");
+        task.className = "task";
+        task.id = "task" + id++;
+        task.draggable = true;
+        task.ondragstart = drag;
+
+        const date = new Date().toLocaleDateString();
+
+        task.innerHTML = `
+            ${name}
+            <small>Created on: ${date}</small>
+        `;
+
+        document.getElementById("todo").appendChild(task);
+        input.value = "";
+    }
+
+    function allowDrop(e) {
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        e.dataTransfer.setData("text", e.target.id);
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        const data = e.dataTransfer.getData("text");
+        const task = document.getElementById(data);
+        const column = e.target.closest(".column");
+
+        column.appendChild(task);
+
+        if (column.id === "completed") {
+            task.classList.add("completed");
+            document.getElementById("message").textContent =
+                "✔ Task Completed Successfully";
+        }
+    }
+</script>
+
+</body>
+</html>

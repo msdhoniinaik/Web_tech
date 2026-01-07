@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Exercise 1</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;   /* full viewport height */
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvasBox" width="500" height="300" style="border:2px solid black;"></canvas>
+
+<script>
+    var canvas = document.getElementById("canvasBox");
+    var ctx = canvas.getContext("2d");
+
+    // Filled Rectangle
+    ctx.fillStyle = "teal";
+    ctx.fillRect(40, 30, 140, 80);
+
+    // Filled Circle
+    ctx.beginPath();
+    ctx.arc(350, 90, 45, 0, Math.PI * 2);
+    ctx.fillStyle = "crimson";
+    ctx.fill();
+
+    // Straight Line
+    ctx.beginPath();
+    ctx.moveTo(50, 200);
+    ctx.lineTo(450, 200);
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Text
+    ctx.font = "24px Arial";
+    ctx.fillStyle = "navy";
+    ctx.fillText("HTML5 Canvas", 160, 260);
+</script>
+
+</body>
+</html>
