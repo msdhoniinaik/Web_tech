@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dynamic Survey Builder</title>
+
+<style>
+    body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+        padding: 40px;
+    }
+
+    .survey-container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #1e293b;
+    }
+
+    .question-card {
+        margin-bottom: 22px;
+        padding: 18px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border-left: 6px solid #6366f1;
+    }
+
+    .question-card label {
+        font-weight: 600;
+        color: #0f172a;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        font-size: 15px;
+    }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .error-text {
+        font-size: 13px;
+        color: #dc2626;
+        margin-top: 6px;
+        display: none;
+    }
+
+    button {
+        margin-top: 25px;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        background: #6366f1;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        background: gray;
+        cursor: not-allowed;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="survey-container">
+    <h2>📋 Student Feedback Survey</h2>
+    <form id="surveyForm"></form>
+    <button id="submitBtn" disabled>Submit Survey</button>
+</div>
+
+<script>
+/* 1. Question Structure */
+const questions = [
+    {
+        id: "q1",
+        text: "What is your name?",
+        type: "text",
+        required: true,
+        maxLength: 20
+    },
+    {
+        id: "q2",
+        text: "What is your Registration number?",
+        type: "text",
+        required: true,
+        maxLength: 20
+    },
+    {
+        id: "q2",
+        text: "What is your Email?",
+        type: "text",
+        required: true,
+        maxLength: 20
+    },
+    {
+        id: "q4",
+        text: "Your preferred learning mode?",
+        type: "radio",
+        required: true,
+        options: ["Online", "Offline", "Hybrid"]
+    },
+    {
+        id: "q5",
+        text: "Which programming languages do you know?",
+        type: "checkbox",
+        required: true,
+        minSelect: 1,
+        maxSelect: 3,
+        options: ["Java", "Python", "C++", "JavaScript"]
+    }
+];
+
+const form = document.getElementById("surveyForm");
+const submitBtn = document.getElementById("submitBtn");
+
+/* 2. Dynamic Form Generation */
+function generateSurvey() {
+    questions.forEach(q => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+
+        const label = document.createElement("label");
+        label.textContent = q.text;
+        card.appendChild(label);
+
+        let inputArea;
+
+        if (q.type === "text") {
+            inputArea = document.createElement("input");
+            inputArea.type = "text";
+            inputArea.maxLength = q.maxLength;
+        }
+
+        if (q.type === "radio" || q.type === "checkbox") {
+            inputArea = document.createElement("div");
+            inputArea.className = "options";
+
+            q.options.forEach(opt => {
+                const optionLabel = document.createElement("label");
+                const input = document.createElement("input");
+                input.type = q.type;
+                input.name = q.id;
+                input.value = opt;
+
+                optionLabel.appendChild(input);
+                optionLabel.append(" " + opt);
+                inputArea.appendChild(optionLabel);
+            });
+        }
+
+        inputArea.dataset.qid = q.id;
+        card.appendChild(inputArea);
+
+        const error = document.createElement("div");
+        error.className = "error-text";
+        error.id = q.id + "-error";
+        card.appendChild(error);
+
+        form.appendChild(card);
+    });
+}
+
+/* 3 & 4. Validation Functions */
+function validateQuestion(q) {
+    const error = document.getElementById(q.id + "-error");
+    error.style.display = "none";
+
+    if (q.type === "text") {
+        const input = document.querySelector(`[data-qid="${q.id}"]`);
+        if (q.required && input.value.trim() === "") {
+            error.textContent = "This field is required";
+            error.style.display = "block";
+            return false;
+        }
+        if (input.value.length > q.maxLength) {
+            error.textContent = `Maximum ${q.maxLength} characters allowed`;
+            error.style.display = "block";
+            return false;
+        }
+    }
+
+    if (q.type === "radio") {
+        const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+        if (!selected && q.required) {
+            error.textContent = "Please select an option";
+            error.style.display = "block";
+            return false;
+        }
+    }
+
+    if (q.type === "checkbox") {
+        const selected = document.querySelectorAll(`input[name="${q.id}"]:checked`);
+        if (selected.length < q.minSelect || selected.length > q.maxSelect) {
+            error.textContent =
+                `Select between ${q.minSelect} and ${q.maxSelect} options`;
+            error.style.display = "block";
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/* 5 & 6. Form Validation */
+function validateForm() {
+    let valid = true;
+    questions.forEach(q => {
+        if (!validateQuestion(q)) valid = false;
+    });
+    submitBtn.disabled = !valid;
+}
+
+form.addEventListener("input", validateForm);
+
+/* Submit Handler */
+submitBtn.addEventListener("click", () => {
+    alert("Survey submitted successfully!");
+});
+
+/* Initialize */
+generateSurvey();
+</script>
+
+</body>
+</html>

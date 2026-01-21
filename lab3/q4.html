@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Activity Monitor</title>
+
+<style>
+    body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+        padding: 30px;
+    }
+
+    .dashboard {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+        text-align: center;
+        color: #0f172a;
+        margin-bottom: 20px;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .reset {
+        background: #ef4444;
+        color: white;
+    }
+
+    .export {
+        background: #6366f1;
+        color: white;
+    }
+
+    .warning {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background: #fef2f2;
+        color: #b91c1c;
+        display: none;
+        font-weight: 600;
+    }
+
+    .log-container {
+        margin-top: 20px;
+        max-height: 350px;
+        overflow-y: auto;
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: 15px;
+    }
+
+    .log-entry {
+        padding: 10px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 14px;
+        color: #334155;
+    }
+
+    .log-entry:last-child {
+        border-bottom: none;
+    }
+
+    .badge {
+        font-size: 12px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        color: white;
+        margin-right: 8px;
+    }
+
+    .click { background: #3b82f6; }
+    .key { background: #22c55e; }
+    .focus { background: #f59e0b; }
+
+    input {
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #cbd5e1;
+        margin-top: 10px;
+        width: 100%;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+    <h2>🕵️ Real-Time User Activity Monitor</h2>
+
+    <input type="text" placeholder="Click here & type to generate activity">
+
+    <div class="controls">
+        <button class="reset" onclick="resetLog()">Reset Log</button>
+        <button class="export" onclick="exportLog()">Export Log</button>
+    </div>
+
+    <div class="warning" id="warning">
+        ⚠ Suspicious Activity Detected: Too many clicks!
+    </div>
+
+    <div class="log-container" id="logContainer"></div>
+</div>
+
+<script>
+/* 1 & 2. Activity storage */
+let activityLog = [];
+let clickCount = 0;
+let clickThreshold = 10;
+let clickTimer = Date.now();
+
+const logContainer = document.getElementById("logContainer");
+const warningBox = document.getElementById("warning");
+
+/* Utility to log activity */
+function logActivity(type, details, phase) {
+    const activity = {
+        type,
+        details,
+        phase,
+        time: new Date().toLocaleTimeString()
+    };
+
+    activityLog.push(activity);
+    displayLog(activity);
+}
+
+/* 4. DOM update */
+function displayLog(activity) {
+    const entry = document.createElement("div");
+    entry.className = "log-entry";
+
+    const badgeClass =
+        activity.type === "Click" ? "click" :
+        activity.type === "Key" ? "key" : "focus";
+
+    entry.innerHTML = `
+        <span class="badge ${badgeClass}">${activity.type}</span>
+        ${activity.details} 
+        <small>(${activity.phase}) - ${activity.time}</small>
+    `;
+
+    logContainer.prepend(entry);
+}
+
+/* 5. Suspicious activity detection */
+function checkSuspiciousClicks() {
+    const now = Date.now();
+    if (now - clickTimer < 5000) {
+        clickCount++;
+        if (clickCount >= clickThreshold) {
+            warningBox.style.display = "block";
+        }
+    } else {
+        clickCount = 1;
+        clickTimer = now;
+        warningBox.style.display = "none";
+    }
+}
+
+/* 3. Event Listeners (Capturing + Bubbling) */
+document.addEventListener("click", e => {
+    logActivity("Click", `Clicked on ${e.target.tagName}`, "Bubbling");
+    checkSuspiciousClicks();
+}, false);
+
+document.addEventListener("click", e => {
+    logActivity("Click", `Clicked on ${e.target.tagName}`, "Capturing");
+}, true);
+
+document.addEventListener("keydown", e => {
+    logActivity("Key", `Key pressed: ${e.key}`, "Bubbling");
+});
+
+document.addEventListener("focusin", e => {
+    logActivity("Focus", `Focused on ${e.target.tagName}`, "Bubbling");
+});
+
+/* 6. Reset & Export */
+function resetLog() {
+    activityLog = [];
+    logContainer.innerHTML = "";
+    warningBox.style.display = "none";
+    clickCount = 0;
+}
+
+function exportLog() {
+    let text = "USER ACTIVITY LOG\n\n";
+    activityLog.forEach((a, i) => {
+        text += `${i + 1}. [${a.time}] ${a.type} - ${a.details} (${a.phase})\n`;
+    });
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "activity_log.txt";
+    link.click();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Multi-Stage Form Workflow</title>
+
+<style>
+    body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+        padding: 40px;
+    }
+
+    .form-container {
+        max-width: 650px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+        text-align: center;
+        color: #1e293b;
+        margin-bottom: 15px;
+    }
+
+    /* Progress bar */
+    .progress {
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #6366f1;
+        transition: width 0.4s ease;
+    }
+
+    .step {
+        display: none;
+    }
+
+    .step.active {
+        display: block;
+    }
+
+    label {
+        display: block;
+        margin-top: 12px;
+        font-weight: 600;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+    }
+
+    .error {
+        font-size: 13px;
+        color: #dc2626;
+        display: none;
+        margin-top: 4px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+    }
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .prev {
+        background: #94a3b8;
+        color: white;
+    }
+
+    .next {
+        background: #6366f1;
+        color: white;
+    }
+
+    .submit {
+        background: #22c55e;
+        color: white;
+        width: 100%;
+    }
+
+    button:disabled {
+        background: gray;
+        cursor: not-allowed;
+    }
+
+    .review {
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="form-container">
+    <h2>🧩 Multi-Stage Registration</h2>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Stage 1 -->
+    <div class="step active">
+        <label>Full Name</label>
+        <input id="name">
+        <div class="error">Name required</div>
+
+        <label>Age</label>
+        <input type="number" id="age">
+        <div class="error">Age must be ≥ 18</div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="step">
+        <label>Email</label>
+        <input id="email">
+        <div class="error">Valid email required</div>
+
+        <label>Password</label>
+        <input type="password" id="password">
+        <div class="error">Min 6 characters</div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="step">
+        <label>Role</label>
+        <select id="role">
+            <option value="">Select</option>
+            <option>Student</option>
+            <option>Teacher</option>
+            <option>Admin</option>
+        </select>
+        <div class="error">Role required</div>
+
+        <label>Skills</label>
+        <input id="skills">
+        <div class="error">Skills required</div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="step">
+        <h3>Review Details</h3>
+        <div class="review" id="reviewBox"></div>
+    </div>
+
+    <div class="buttons">
+        <button class="prev" onclick="prevStep()">Previous</button>
+        <button class="next" onclick="nextStep()">Next</button>
+    </div>
+</div>
+
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll(".step");
+const progressBar = document.getElementById("progressBar");
+
+/* 6. Temporary Storage */
+let formData = {};
+
+function showStep() {
+    steps.forEach((step, i) =>
+        step.classList.toggle("active", i === currentStep)
+    );
+    progressBar.style.width = ((currentStep + 1) / steps.length) * 100 + "%";
+}
+
+function validateStep() {
+    let valid = true;
+    const inputs = steps[currentStep].querySelectorAll("input, select");
+
+    inputs.forEach(input => {
+        const error = input.nextElementSibling;
+        error.style.display = "none";
+
+        if (input.id === "name" && !input.value.trim()) valid = showErr(error);
+        if (input.id === "age" && input.value < 18) valid = showErr(error);
+        if (input.id === "email" && !input.value.includes("@")) valid = showErr(error);
+        if (input.id === "password" && input.value.length < 6) valid = showErr(error);
+        if (input.id === "role" && !input.value) valid = showErr(error);
+        if (input.id === "skills" && !input.value.trim()) valid = showErr(error);
+
+        if (valid) formData[input.id] = input.value;
+    });
+
+    return valid;
+}
+
+function showErr(error) {
+    error.style.display = "block";
+    return false;
+}
+
+function nextStep() {
+    if (!validateStep()) return;
+
+    if (currentStep === steps.length - 2) {
+        document.querySelector(".next").textContent = "Submit";
+        document.querySelector(".next").className = "submit";
+        showReview();
+    }
+
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep();
+    } else {
+        alert("Form submitted successfully!");
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        currentStep--;
+        document.querySelector(".next").textContent = "Next";
+        document.querySelector(".next").className = "next";
+        showStep();
+    }
+}
+
+function showReview() {
+    const review = document.getElementById("reviewBox");
+    review.innerHTML = Object.entries(formData)
+        .map(([k, v]) => `<strong>${k}:</strong> ${v}`)
+        .join("<br>");
+}
+
+showStep();
+</script>
+
+</body>
+</html>
