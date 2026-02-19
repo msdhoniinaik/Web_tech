@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product Inventory System</title>
+<style>
+body {
+    font-family: Arial;
+    background: #eef2f7;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    background: #e9470c;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 22px;
+}
+
+/* Form Card */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+input, select, button {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #00b894;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #55efc4;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #6c5ce7;
+    color: white;
+}
+
+/* Stock warning */
+.low-stock {
+    background: #ffcccc;
+    font-weight: bold;
+}
+
+.success { color: green; font-weight: bold; }
+.error { color: red; font-weight: bold; }
+
+.total-box {
+    background: #fdcb6e;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>📦 Product Inventory System</header>
+
+<div class="card">
+    <h3>Add / Update Product</h3>
+    <input id="pid" placeholder="Product ID">
+    <input id="pname" placeholder="Name">
+    <input id="pcat" placeholder="Category">
+    <input id="pprice" placeholder="Price">
+    <input id="pstock" placeholder="Stock Quantity">
+
+    <br>
+    <button onclick="addProduct()">Add</button>
+    <button onclick="updateProduct()">Update</button>
+    <button onclick="loadProducts()">Refresh</button>
+
+    <div id="msg"></div>
+</div>
+
+<div class="card">
+    <h3>Search by Category</h3>
+    <input id="searchCat" placeholder="Enter category">
+    <button onclick="searchProduct()">Search</button>
+</div>
+
+<div class="card">
+    <h3>Inventory Table</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="productTable"></tbody>
+    </table>
+</div>
+
+<div class="total-box">
+    Total Inventory Value: ₹<span id="totalValue">0</span>
+</div>
+
+<script src="q4script.js"></script>
+</body>
+</html>
