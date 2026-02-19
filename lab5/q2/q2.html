@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Library Book Tracker</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: #2d3436;
+    height: 100vh;
+    position: fixed;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar h2 {
+    text-align: center;
+}
+
+/* Main Content */
+.main {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+input, select, button {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #0984e3;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #74b9ff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #0984e3;
+    color: white;
+}
+
+.msg {
+    font-weight: bold;
+    margin-top: 10px;
+}
+.success { color: green; }
+.error { color: red; }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>📚 Library Panel</h2>
+    <p>Book Tracker System</p>
+</div>
+
+<div class="main">
+    <h2>Library Book Management (XML + AJAX)</h2>
+
+    <div class="card">
+        <h3>Add / Update Book</h3>
+        <input type="text" id="bookId" placeholder="Book ID">
+        <input type="text" id="title" placeholder="Title">
+        <input type="text" id="author" placeholder="Author">
+
+        <select id="status">
+            <option value="Available">Available</option>
+            <option value="Not Available">Not Available</option>
+        </select>
+
+        <br>
+        <button onclick="addBook()">Add Book</button>
+        <button onclick="updateBook()">Update Status</button>
+        <button onclick="loadBooks()">Refresh</button>
+
+        <div id="msg" class="msg"></div>
+    </div>
+
+    <div class="card">
+        <h3>Book List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th><th>Title</th><th>Author</th><th>Status</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="bookTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="q2script.js"></script>
+</body>
+</html>
