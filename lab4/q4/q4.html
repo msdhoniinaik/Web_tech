@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weather Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f8b373, #72aaed);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 20px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #ff9800;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e68900;
+}
+
+#loading {
+    display: none;
+    margin-top: 10px;
+}
+
+#weatherResult {
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🌤️ Weather Information Dashboard</h2>
+
+    <input type="text" id="cityInput" placeholder="Enter city name">
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div id="loading">⏳ Loading...</div>
+    <div id="weatherResult"></div>
+</div>
+
+<script src="q4script.js"></script>
+</body>
+</html>

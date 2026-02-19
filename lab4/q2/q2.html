@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Live Product Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #dadff6, #7ac5eb);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    width: 500px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 5px #667eea;
+}
+
+#results {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.product {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.product span {
+    display: block;
+    font-size: 14px;
+}
+
+.loading {
+    color: blue;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.no-result {
+    color: gray;
+    font-weight: bold;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🛒 Live Product Search</h2>
+
+    <input type="text" id="searchBox" placeholder="Search products...">
+
+    <div id="results"></div>
+</div>
+
+<script src="q2script.js"></script>
+</body>
+</html>

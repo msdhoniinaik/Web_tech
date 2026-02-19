@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #929be7, #ba7087);
+    padding: 30px;
+    color: white;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #1d2671;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #c33764;
+}
+
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.success { color: green; }
+.error { color: red; }
+
+table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #1d2671;
+    color: white;
+}
+
+.action-btn {
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit { background: orange; color: white; }
+.delete { background: red; color: white; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🎓 AJAX Student Management System</h2>
+
+    <form id="studentForm">
+        <input type="text" id="sid" placeholder="Student ID" required>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="dept" placeholder="Department" required>
+        <input type="number" id="marks" placeholder="Marks" required>
+        <button type="submit">Add / Update</button>
+    </form>
+
+    <div id="message" style="display:none;"></div>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Marks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable"></tbody>
+    </table>
+</div>
+
+<script src="q3script.js"></script>
+</body>
+</html>
