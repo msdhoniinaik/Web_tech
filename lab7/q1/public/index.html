@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Student Notes Manager</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background-color:#f4f6f9;
+    margin:40px;
+}
+
+h1{
+    color:#333;
+}
+
+.container{
+    background:white;
+    padding:20px;
+    width:400px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    padding:10px 15px;
+    background-color:#007bff;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background-color:#0056b3;
+}
+
+.delete-btn{
+    background-color:#dc3545;
+    margin-top:10px;
+}
+
+.delete-btn:hover{
+    background-color:#a71d2a;
+}
+
+#notes{
+    margin-top:30px;
+}
+
+.note-card{
+    background:white;
+    padding:15px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom:15px;
+    width:400px;
+}
+
+.note-title{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.note-subject{
+    color:gray;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Student Notes Manager</h1>
+
+<div class="container">
+
+<h3>Add Note</h3>
+
+<label>Title</label>
+<input id="title">
+
+<label>Subject</label>
+<input id="subject">
+
+<label>Description</label>
+<input id="description">
+
+<button onclick="addNote()">Add Note</button>
+
+<button onclick="loadNotes()">View Notes</button>
+
+</div>
+
+<div id="notes"></div>
+
+<script>
+
+async function addNote(){
+
+const note = {
+
+title: document.getElementById("title").value,
+subject: document.getElementById("subject").value,
+description: document.getElementById("description").value
+
+};
+
+await fetch("/notes",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(note)
+
+});
+
+alert("Note Added");
+
+loadNotes();
+
+}
+
+async function loadNotes(){
+
+const response = await fetch("/notes");
+
+const data = await response.json();
+
+let html = "";
+
+data.forEach(note=>{
+
+html += `
+<div class="note-card">
+
+<div class="note-title">${note.title}</div>
+
+<div class="note-subject">${note.subject}</div>
+
+<p>${note.description}</p>
+
+<button class="delete-btn" onclick="deleteNote('${note._id}')">Delete</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("notes").innerHTML = html;
+
+}
+
+async function deleteNote(id){
+
+await fetch("/notes/"+id,{
+
+method:"DELETE"
+
+});
+
+loadNotes();
+
+}
+
+</script>
+
+</body>
+
+</html>

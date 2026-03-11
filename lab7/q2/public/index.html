@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Online Book Finder</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+margin-top:40px;
+}
+
+.container{
+background:white;
+width:550px;
+margin:auto;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+input{
+padding:8px;
+width:200px;
+margin:5px;
+}
+
+button{
+padding:8px 12px;
+margin:5px;
+background:#4CAF50;
+border:none;
+color:white;
+border-radius:4px;
+cursor:pointer;
+}
+
+button:hover{
+background:#45a049;
+}
+
+.book{
+background:#f9f9f9;
+padding:10px;
+margin:10px;
+border-left:4px solid green;
+text-align:left;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Online Book Finder</h2>
+
+<!-- Search -->
+<input id="title" placeholder="Search title">
+<button onclick="searchBook()">Search</button>
+
+<br>
+
+<!-- Category Filter -->
+<input id="category" placeholder="Filter category">
+<button onclick="filterCategory()">Filter</button>
+
+<br>
+
+<!-- Sorting -->
+<button onclick="sortPrice()">Sort by Price</button>
+<button onclick="sortRating()">Sort by Rating</button>
+
+<br>
+
+<!-- Top Rated -->
+<button onclick="topBooks()">Top Rated</button>
+
+<!-- Pagination -->
+<button onclick="nextPage()">Load More</button>
+
+<div id="books"></div>
+
+</div>
+
+<script>
+
+/* BOOK DATABASE (ARRAY) */
+
+let books=[
+
+{title:"JavaScript Essentials",author:"John Smith",category:"Programming",price:450,rating:4.5,year:2023},
+
+{title:"MongoDB Guide",author:"David Lee",category:"Database",price:500,rating:4.2,year:2022},
+
+{title:"Python Basics",author:"Alex Brown",category:"Programming",price:400,rating:4.6,year:2021},
+
+{title:"Web Development",author:"Sarah White",category:"Programming",price:600,rating:4.8,year:2024},
+
+{title:"HTML CSS Design",author:"Mark Wilson",category:"Design",price:350,rating:4.1,year:2020},
+
+{title:"Java Programming",author:"Robert King",category:"Programming",price:480,rating:4.3,year:2023},
+
+{title:"React Guide",author:"Emma Stone",category:"Programming",price:520,rating:4.7,year:2024},
+
+{title:"UI UX Basics",author:"Lisa Ray",category:"Design",price:300,rating:4.0,year:2019}
+
+];
+
+let page=1;
+
+/* DISPLAY FUNCTION */
+
+function display(data){
+
+let output="";
+
+data.forEach(b=>{
+
+output+=`
+<div class="book">
+
+<b>${b.title}</b><br>
+Author: ${b.author}<br>
+Category: ${b.category}<br>
+Price: ₹${b.price}<br>
+Rating: ${b.rating}
+
+</div>
+`;
+
+});
+
+document.getElementById("books").innerHTML=output;
+
+}
+
+/* SEARCH BY TITLE */
+
+function searchBook(){
+
+let title=document.getElementById("title").value.toLowerCase();
+
+let result=books.filter(b=>b.title.toLowerCase().includes(title));
+
+display(result);
+
+}
+
+/* FILTER BY CATEGORY */
+
+function filterCategory(){
+
+let category=document.getElementById("category").value.toLowerCase();
+
+let result=books.filter(b=>b.category.toLowerCase().includes(category));
+
+display(result);
+
+}
+
+/* SORT BY PRICE */
+
+function sortPrice(){
+
+let result=[...books].sort((a,b)=>a.price-b.price);
+
+display(result);
+
+}
+
+/* SORT BY RATING */
+
+function sortRating(){
+
+let result=[...books].sort((a,b)=>b.rating-a.rating);
+
+display(result);
+
+}
+
+/* TOP RATED BOOKS */
+
+function topBooks(){
+
+let result=books.filter(b=>b.rating>=4).slice(0,5);
+
+display(result);
+
+}
+
+/* PAGINATION (LOAD MORE) */
+
+function nextPage(){
+
+let start=(page-1)*3;
+
+let result=books.slice(start,start+3);
+
+display(result);
+
+page++;
+
+}
+
+</script>
+
+</body>
+</html>
