@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Enrollment</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #fce4ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(to right, #81d4fa, #f48fb1);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .output {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            background: #f5f5f5;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Course Enrollment</h2>
+
+    <input type="text" id="course" placeholder="Course Name">
+    <input type="text" id="instructor" placeholder="Instructor Name">
+    <input type="number" id="seats" placeholder="Available Seats (0 or 1)">
+
+    <button onclick="enroll()">Enroll</button>
+
+    <div class="output" id="result"></div>
+</div>
+
+<script>
+// ES6 Class
+class Course {
+    constructor(courseName, instructor) {
+        this.courseName = courseName;
+        this.instructor = instructor;
+    }
+
+    displayCourse() {
+        return `Course: ${this.courseName}, Instructor: ${this.instructor}`;
+    }
+}
+
+function enroll() {
+    let cname = document.getElementById("course").value;
+    let instructor = document.getElementById("instructor").value;
+    let seats = Number(document.getElementById("seats").value);
+
+    if (cname === "" || instructor === "" || seats === "") {
+        document.getElementById("result").innerHTML = "Please fill all fields";
+        return;
+    }
+
+    let course1 = new Course(cname, instructor);
+
+    // Promise
+    let enrollCourse = new Promise((resolve, reject) => {
+        if (seats > 0)
+            resolve("Enrollment Successful");
+        else
+            reject("Course Full");
+    });
+
+    enrollCourse
+        .then(msg => {
+            document.getElementById("result").innerHTML =
+                `${course1.displayCourse()}<br>${msg}`;
+        })
+        .catch(err => {
+            document.getElementById("result").innerHTML =
+                `${course1.displayCourse()}<br>${err}`;
+        });
+}
+</script>
+
+</body>
+</html>

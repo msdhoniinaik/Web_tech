@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Object Demo</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #fce4ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(to right, #64b5f6, #f06292);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .output {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f9f9f9;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Student Details</h2>
+
+    <input type="number" id="id" placeholder="Enter ID">
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="text" id="dept" placeholder="Department">
+    <input type="number" id="marks" placeholder="Marks">
+
+    <button onclick="processStudent()">Submit</button>
+
+    <div class="output" id="result"></div>
+</div>
+
+<script>
+function processStudent() {
+
+    let id = document.getElementById("id").value;
+    let name = document.getElementById("name").value;
+    let department = document.getElementById("dept").value;
+    let marks = document.getElementById("marks").value;
+
+    // Validation
+    if (id === "" || name === "" || department === "" || marks === "") {
+        document.getElementById("result").innerHTML = "Please fill all fields";
+        return;
+    }
+
+    // Convert marks to number
+    marks = Number(marks);
+
+    // Object creation
+    const student = {
+        id: Number(id),
+        name,
+        department,
+        marks
+    };
+
+    // Object destructuring
+    const {id: sid, name: n, department: d, marks: m} = student;
+
+    // Grade logic
+    let grade;
+    if (m >= 90) grade = "A";
+    else if (m >= 75) grade = "B";
+    else if (m >= 50) grade = "C";
+    else grade = "Fail";
+
+    // Spread operator
+    const updatedStudent = {
+        ...student,
+        grade
+    };
+
+    // Display output
+    document.getElementById("result").innerHTML =
+        `<b>Destructured Values:</b><br>
+         ${sid} ${n} ${d} ${m}<br><br>
+         <b>Updated Object:</b><br>
+         ${JSON.stringify(updatedStudent, null, 2)}`;
+}
+</script>
+
+</body>
+</html>
