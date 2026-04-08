@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Student Management</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f7ff;
+text-align:center;
+margin-top:60px;
+}
+
+.container{
+background:white;
+width:500px;
+margin:auto;
+padding:30px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#4a6cf7;
+}
+
+input{
+padding:10px;
+margin:8px;
+width:200px;
+}
+
+button{
+padding:10px 20px;
+background:#4a6cf7;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#324ecf;
+}
+
+#output{
+margin-top:20px;
+background:#eef1ff;
+padding:10px;
+border-radius:6px;
+text-align:left;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Student CRUD</h1>
+
+<input type="text" id="name" placeholder="Name"><br>
+<input type="number" id="age" placeholder="Age"><br>
+<input type="text" id="course" placeholder="Course"><br>
+
+<button onclick="addStudent()">Add Student</button>
+<button onclick="getStudents()">View Students</button>
+
+<div id="output"></div>
+
+</div>
+
+<script>
+
+function addStudent(){
+
+let name=document.getElementById("name").value;
+let age=document.getElementById("age").value;
+let course=document.getElementById("course").value;
+
+fetch('/students',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({name,age,course})
+})
+.then(res=>res.json())
+.then(data=>{
+alert("Student Added");
+});
+
+}
+
+function getStudents(){
+
+fetch('/students')
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("output").innerHTML=
+JSON.stringify(data,null,2);
+});
+
+}
+
+</script>
+
+</body>
+</html>

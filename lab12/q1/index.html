@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product API</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f7ff;
+text-align:center;
+margin-top:60px;
+}
+
+.container{
+background:white;
+width:500px;
+margin:auto;
+padding:30px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#4a6cf7;
+}
+
+input{
+padding:10px;
+margin:10px;
+width:200px;
+}
+
+button{
+padding:10px 20px;
+background:#4a6cf7;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#324ecf;
+}
+
+#result{
+margin-top:20px;
+text-align:left;
+background:#f0f3ff;
+padding:15px;
+border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Product REST API</h1>
+
+<p>Add a new product</p>
+
+<input type="text" id="productName" placeholder="Product Name">
+<button onclick="addProduct()">Add Product</button>
+
+<br><br>
+
+<button onclick="getProducts()">View Products</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function getProducts(){
+
+fetch('/api/products')
+.then(res => res.json())
+.then(data => {
+document.getElementById("result").innerHTML =
+JSON.stringify(data,null,2);
+});
+
+}
+
+function addProduct(){
+
+let name = document.getElementById("productName").value;
+
+fetch('/api/products',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body: JSON.stringify({name:name})
+})
+.then(res => res.json())
+.then(data => {
+alert("Product Added");
+});
+
+}
+
+</script>
+
+</body>
+</html>
