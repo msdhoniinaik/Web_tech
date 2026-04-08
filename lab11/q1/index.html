@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Node.js Web Server</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+text-align:center;
+}
+
+header{
+background:rgba(0,0,0,0.2);
+padding:20px;
+font-size:28px;
+font-weight:bold;
+letter-spacing:2px;
+}
+
+.container{
+margin-top:80px;
+}
+
+.card{
+background:white;
+color:#333;
+width:420px;
+margin:auto;
+padding:30px;
+border-radius:12px;
+box-shadow:0 8px 25px rgba(0,0,0,0.3);
+}
+
+.card h2{
+color:#5a4fcf;
+}
+
+button{
+background:#5a4fcf;
+color:white;
+border:none;
+padding:12px 25px;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+margin-top:15px;
+transition:0.3s;
+}
+
+button:hover{
+background:#3f36a5;
+}
+
+footer{
+margin-top:100px;
+font-size:14px;
+opacity:0.8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+Node.js Web Server
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Welcome</h2>
+
+<p>
+This webpage is served using a simple Node.js HTTP server without using any external frameworks.
+</p>
+
+<p>
+It demonstrates how Node.js handles client requests and responses.
+</p>
+
+<button onclick="alert('Server is working perfectly!')">
+Check Server
+</button>
+
+</div>
+
+</div>
+
+<footer>
+Node.js Lab Exercise | Simple Web Server
+</footer>
+
+</body>
+</html>
